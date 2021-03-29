@@ -807,7 +807,11 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
             ScanFilter f = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(uuid)).build();
             filters.add(f);
         }
-        ScanSettings settings = new ScanSettings.Builder().setScanMode(scanMode).build();
+        ScanSettings.Builder builder = new ScanSettings.Builder();
+        if (Build.VERSION.SDK_INT >= 26) {
+            builder.setLegacy(false);
+        }
+        ScanSettings settings = builder.setScanMode(scanMode).build();
         scanner.startScan(filters, settings, getScanCallback21());
     }
 
